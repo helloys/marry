@@ -1,0 +1,21 @@
+<!--pages/invitation/index.wxml-->
+
+<view class="container">
+  <image src='/images/inv.png' class='inv'></image>
+  <image src='{{bgImg}}' class='cover' mode='aspectFill'></image>
+
+  <view class='datetime' animation="{{animationData}}">
+    <view class='box'>
+      <view class="name css13610f7ae66601">
+        <span class="fl">{{inviteName}}</span>
+      </view>
+      <view class="date css13610f7ae66601">
+        <view>{{inviteDateOne}}</view>
+        <view>{{inviteDateTwo}}</view>
+        <view bindtap="markertap">{{inviteAddress}}</view>
+        <view>恭请您的光临</view>
+      </view>
+    </view>
+  </view>
+
+</view>

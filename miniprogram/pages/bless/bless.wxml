@@ -1,0 +1,22 @@
+<!--pages/bless/index.wxml-->
+<view class="container">
+  <view class="chat_view" wx:if="{{moments.length > 0}}">
+    <view class="chat_list" wx:for="{{moments}}" wx:key="user" wx:for-item="moment">
+      <view class="userInfo">
+        <view class="chat_face">
+          <image src="{{moment.avatarUrl}}" />
+        </view>
+        <view class="chat_words">
+          <view class="chat_meta">
+            <text class="chat_user">{{moment.nickName}}</text>
+            <text class="chat_date">{{moment.time}}</text>
+          </view>
+          <view>{{moment.words}}</view>
+        </view>
+      </view>
+      <view class='preview-cnt' wx:if='{{moment.photos.length}}'>
+        <image class='preview-image' wx:for='{{moment.photos}}' wx:for-item="photo" wx:key='*this' src='{{photo}}' mode='aspectFill' bindtap='previewImg' data-src='{{photo}}' data-urls='{{moment.photos}}'></image>
+      </view>
+    </view>
+  </view>
+</view>

@@ -1,0 +1,37 @@
+<!--pages/add-comment/add-comment.wxml-->
+<!-- 用户 openid -->
+<view wx:if="{{!userInfo}}">
+  <image class="bg" src="/images/bg.png"></image>
+  <view class="unlogin-card">
+    <image class="unlogin-head" src='/images/user-unlogin.png'  mode='aspectFill'></image>
+    <view class="unlogin-info">
+      <view class="unlogin-text">未登录</view>
+      <view class="unlogin-tips">点击微信登录后可发布动态</view>
+    </view>
+  </view>
+  <button wx:if="{{locationAuthType==0}}" class="unlogin-btn" open-type='getUserInfo' bindgetuserinfo='onTapLogin'>微信登录</button>
+  <button wx:if="{{locationAuthType==1}}" class="unlogin-btn" open-type='openSetting' bindopensetting="onTapLogin">授权登录</button>
+  <button wx:if="{{locationAuthType==2}}" class="unlogin-btn" open-type='openSetting' bindopensetting="onTapLogin">已经授权</button>
+</view>
+
+<view wx:else>
+  <view class="userinfo">
+    <button
+      class="userinfo-avatar"
+      style="background-image: url({{userInfo.avatarUrl}})"
+    ></button>
+    <view>
+      <button class="userinfo-nickname" bindtap="onGetOpenid">点击获取 openid</button>
+    </view>
+  </view>
+
+  <view class='comment-cnt'>
+  <textarea class='comment-ipt' placeholder-class='comment-placeholder' placeholder='你想说点什么呢' auto-focus maxlength='255' bindinput='onInput'></textarea>
+    <view class='preview-cnt' wx:if='{{commentImages.length}}'>
+      <image class='preview-image' wx:for='{{commentImages}}' wx:key='*this' src='{{item}}' mode='aspectFill' bindtap='previewImg' data-src='{{item}}'></image>
+    </view>
+    <image class='opr-upload' src='/images/image.png' bindtap='chooseImage'></image>
+  </view>
+  <view class="comment-btn {{!commentValue ? 'dis' : ''}}" bindtap="addMoment">发表</view>
+</view>
+

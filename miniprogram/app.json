@@ -1,0 +1,48 @@
+{
+  "pages": [
+    "pages/map/map",
+    "pages/add-moment/add-moment",
+    "pages/bless/bless",
+    "pages/home/home"
+    
+  ],
+  "window": {
+    "backgroundTextStyle": "light",
+    "navigationBarBackgroundColor": "#CD96CD",
+    "navigationBarTextStyle": "white",
+    "enablePullDownRefresh": false
+  },
+  "tabBar": {
+    "list": [
+      {
+        "pagePath": "pages/home/home",
+        "iconPath": "images/tab/ic_home_normal.png",
+        "selectedIconPath": "images/tab/ic_home_select.png",
+        "text": "首页"
+      },
+      {
+        "pagePath": "pages/map/map",
+        "iconPath": "images/tab/ic_nav_normal.png",
+        "selectedIconPath": "images/tab/ic_nav_select.png",
+        "text": "导航"
+      },
+      {
+        "pagePath": "pages/bless/bless",
+        "iconPath": "images/tab/ic_heart_normal.png",
+        "selectedIconPath": "images/tab/ic_heart_select.png",
+        "text": "祝福"
+      },
+      {
+        "pagePath": "pages/add-moment/add-moment",
+        "iconPath": "images/tab/meme-normal@2x.png",
+        "selectedIconPath": "images/tab/me-selected@2x.png",
+        "text": "我的"
+      }
+    ],
+    "position": "bottom",
+    "selectedColor": "#CD96CD",
+    "backgroundColor": "#fff",
+    "color": "#5f5f5f"
+  },
+  "cloud": true
+}
