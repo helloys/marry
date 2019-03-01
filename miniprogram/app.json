@@ -1,10 +1,9 @@
 {
   "pages": [
+    "pages/home/home",
     "pages/map/map",
     "pages/add-moment/add-moment",
-    "pages/bless/bless",
-    "pages/home/home"
-    
+    "pages/bless/bless"
   ],
   "window": {
     "backgroundTextStyle": "light",
