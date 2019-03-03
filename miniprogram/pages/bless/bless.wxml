@@ -11,7 +11,7 @@
             <text class="chat_user">{{moment.nickName}}</text>
             <text class="chat_date">{{moment.time}}</text>
           </view>
-          <view>{{moment.words}}</view>
+          <view class="comment">{{moment.words}}</view>
         </view>
       </view>
       <view class='preview-cnt' wx:if='{{moment.photos.length}}'>

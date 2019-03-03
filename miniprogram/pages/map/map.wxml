@@ -12,7 +12,7 @@
       <view class="date css13610f7ae66601">
         <view>{{inviteDateOne}}</view>
         <view>{{inviteDateTwo}}</view>
-        <view bindtap="markertap">{{inviteAddress}}</view>
+        <view bindtap="markertap">{{inviteAddress}}<span class="colorA">(点击导航)</span></view>
         <view>恭请您的光临</view>
       </view>
     </view>

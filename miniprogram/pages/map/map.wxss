@@ -38,7 +38,11 @@
     width: 620rpx;
     padding: 15rpx;
     left: 50rpx;
-    background-color: rgba(255, 255, 255, .8)
+    background-color: rgba(255, 255, 255, .8);
+    
+}
+.colorA {
+      color:#CD96CD;
 }
 .box {
     padding: 30rpx 0;

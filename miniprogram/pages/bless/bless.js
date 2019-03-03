@@ -25,7 +25,7 @@ Page({
     db.collection('moments').get({
       success(res) {
         that.setData({
-          moments: res.data
+          moments: res.data.reverse() 
         })
       }
     })

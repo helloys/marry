@@ -23,13 +23,16 @@ page {
 }
 .userInfo {
   border-radius: 25px;
+  display: flex;
+  margin-bottom: 10rpx;
 }
 .chat_face {
     width: 100rpx;
     height: 100rpx;
-    float: left;
+    /* float: left; */
     margin-right: 30rpx;
     margin-top: 10rpx;
+    margin-bottom: 10rpx;
 }
 .chat_face image{
     width: 100rpx;
@@ -38,7 +41,7 @@ page {
 }
 .chat_words {
     width: 500rpx;
-    float: left;
+    /* float: left; */
     font-size: 30rpx;
     line-height: 50rpx;
     color: #999;
@@ -61,7 +64,6 @@ page {
     color: #ccc;
     margin-left: 19rpx;
 }
-
 .preview-cnt {
   /* display: flex; */
   margin-bottom: 10rpx;
