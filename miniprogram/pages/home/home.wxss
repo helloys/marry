@@ -1,7 +1,7 @@
 .container {
   width: 750rpx;
   height: 100vh;
-  background-color: #f1f2f7;
+  background-color: #CD96CD;
 }
 
 .banner_style {
@@ -10,8 +10,12 @@
 }
 
 .banner_image {
-  width: 750rpx;
+  width: 742rpx;
   height: 100vh;
+  margin-left: 4rpx;
+  margin-right: 4rpx;
+  border-radius: 30rpx;
+  /* box-shadow:  0 0 20rpx rgba(190,77,43,.6); */
 }
 
 
