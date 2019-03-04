@@ -4,13 +4,6 @@
     "pages/map/map",
     "pages/bless/bless",
     "pages/add-moment/add-moment"
-<<<<<<< HEAD
-=======
-    
-    
-    
-    
->>>>>>> 7856a33c68055829971e9edf4240420662923edf
   ],
   "window": {
     "backgroundTextStyle": "light",
