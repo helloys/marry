@@ -10,11 +10,12 @@
 }
 
 .banner_image {
-  width: 742rpx;
+  width: 746rpx;
   height: 100vh;
-  margin-left: 4rpx;
-  margin-right: 4rpx;
-  border-radius: 30rpx;
+  margin-left: 2rpx;
+  margin-right: 2rpx;
+  border-top-left-radius: 30rpx;
+  border-top-right-radius: 30rpx;
   /* box-shadow:  0 0 20rpx rgba(190,77,43,.6); */
 }
 

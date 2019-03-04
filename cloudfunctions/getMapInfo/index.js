@@ -24,7 +24,7 @@ exports.main = async (event, context) => {
       inviteName: 'Mr.余&Miss.张',
       inviteDateOne: '谨定于 2019年5月16日',
       inviteDateTwo: '农历 己亥年四月十二 举办婚礼',
-      inviteAddress: '地址：额尔古纳市莫尔道嘎镇姐妹酒家',
+      inviteAddress: '地址：额尔古纳市莫尔道嘎姐妹酒家',
       inviteLongitude: 120.778869,
       inviteLatitude: 51.260169,
       bgImg: "cloud://marry-6752d6.6d61-marry-6752d6/2019-2-5-23-34-42_moment0.jpg"

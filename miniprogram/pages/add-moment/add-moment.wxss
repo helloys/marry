@@ -18,12 +18,10 @@ page {
 }
 
 .user-name {
-  flex: 1;
-  margin: 0 31rpx;
+  font-size: 40rpx;
+  line-height: 46rpx;
+  color: rgba(29, 29, 38, 0.8);
   font-weight: bold;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
 }
 
 .user-split {

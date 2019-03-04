@@ -1,19 +1,20 @@
 
 var musicUrl = 'http://www.ytmp3.cn/down/49676.mp3'
-var imgUrlsDefault = ["cloud://marry-6752d6.6d61-marry-6752d6/2019-2-1-14-44-23_moment0.jpg",
-  "cloud://marry-6752d6.6d61-marry-6752d6/2019-1-4-16-27-48_moment0.png",
-  "cloud://marry-6752d6.6d61-marry-6752d6/2019-1-4-16-27-48_moment1.png",
-  "cloud://marry-6752d6.6d61-marry-6752d6/2019-1-4-17-19-22_moment0.png"
+var imgUrlsDefault = [
+  "cloud://marry-6752d6.6d61-marry-6752d6/2019-1-4-17-22-57_moment2.png"
                       ]
+
+const app = getApp()
 
 Page({
   data: {
     autoplay: true,
     isPlayingMusic: false,
-    music_url: musicUrl,
+    music_url: "",
 
     swiperCurrentIndex: 0,
-    imgUrls: imgUrlsDefault,
+    imgUrls: [],
+    imgDescs: null,
     indicatorDots: true,
     autoplay: true,
     interval: 3600,
@@ -22,10 +23,11 @@ Page({
 
   //生命周期函数--监听页面加载
   onLoad: function (data) {
-    this.play()
-    this.setData({
-      imgUrls: imgUrlsDefault
-    })
+    this.getHomeInfo()
+    // this.play()
+    // this.setData({
+    //   imgUrls: imgUrlsDefault
+    // })
   },
 
   play: function (event) {
@@ -43,6 +45,65 @@ Page({
       })
       this.setData({
         isPlayingMusic: true
+      })
+    }
+  },
+
+  // 获取首页图片和背景音乐
+  getHomeInfo() {
+    wx.showLoading({
+      //title: '加载中',
+    })
+
+    setTimeout(() => {
+      wx.hideLoading()
+    }, 2000)
+
+    // 调用云函数
+    wx.cloud.callFunction({
+      name: 'getHomeInfo',
+      data: {},
+      success: res => {
+        const homeInfo = res.result
+        this.setData({
+          music_url: homeInfo.musicUrl,
+          imgUrls: homeInfo.imgUrls,
+          imgTitles: homeInfo.imgTitles
+        })
+        wx.hideLoading()
+        this.play()
+      },
+      fail: err => {
+        console.error("getMapInfo fail")
+        this.play()
+      }
+    })
+  },
+
+  onSwiperChange(e) {
+    this.data.swiperCurrentIndex = e.detail.current
+
+    if (app.globalData.bHomePage === true) {  
+      this.updateTitle()
+    }
+  },
+
+  /**
+  * 生命周期函数--监听页面显示
+  */
+  onShow: function () {
+    app.globalData.bHomePage = true
+
+    this.updateTitle()
+  },
+
+  updateTitle: function () {
+    const imgTitles = this.data.imgTitles
+    if (imgTitles != null && imgTitles !== undefined && imgTitles.length > 0) {
+      const index = this.data.swiperCurrentIndex
+      const curTitle = this.data.imgTitles[index]
+      wx.setNavigationBarTitle({
+        title: curTitle
       })
     }
   }

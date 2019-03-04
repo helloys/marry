@@ -20,9 +20,10 @@
       class="userinfo-avatar"
       style="background-image: url({{userInfo.avatarUrl}})"
     ></button>
-    <view>
+    <view class="user-name">{{userInfo.nickName}}</view>
+    <!-- <view>
       <button class="userinfo-nickname" bindtap="onGetOpenid">点击获取 openid</button>
-    </view>
+    </view> -->
   </view>
 
   <view class='comment-cnt'>

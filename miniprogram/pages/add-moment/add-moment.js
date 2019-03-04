@@ -13,6 +13,8 @@ Page({
 
     commentValue: '',
     commentImages: [],
+
+    bgShare: ''
   },
 
   onLoad: function () {
@@ -199,6 +201,8 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
+    app.globalData.bHomePage = false
+
     this.setData({
       comments: "",
       commentImages: []
@@ -237,7 +241,23 @@ Page({
    * 用户点击右上角分享
    */
   onShareAppMessage: function () {
-
+    var that = this;
+    return {
+      title: '诚意邀请你参加我们的婚礼',
+      imageUrl: bgShare,
+      path: "pages/map/map",
+      success: function (res) {
+        wx.showToast({
+          title: '分享成功',
+        })
+      },
+      fail: function (res) {
+        // 转发失败
+        wx.showToast({
+          title: '分享取消',
+        })
+      }
+    }
   },
 
   onTapLogin: function () {
@@ -247,7 +267,6 @@ Page({
           userInfo,
           locationAuthType: app.data.locationAuthType
         })
-        console.log(userInfo)
       },
       error: () => {
         this.setData({
