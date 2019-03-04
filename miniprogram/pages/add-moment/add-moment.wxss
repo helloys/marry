@@ -93,6 +93,12 @@ page {
   background-color: white;
   background-size: cover;
 }
+.username {
+  font-size: 36rpx;
+  /* color#007aff; */
+  background-color: white;
+  background-size: cover;
+}
 
 .userinfo-nickname::after {
   border: none;
