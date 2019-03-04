@@ -1,9 +1,10 @@
 {
   "pages": [
+    "pages/home/home",
     "pages/map/map",
     "pages/bless/bless",
-    "pages/add-moment/add-moment",
-    "pages/home/home"
+    "pages/add-moment/add-moment"
+    
     
     
     
