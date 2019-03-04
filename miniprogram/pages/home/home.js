@@ -106,5 +106,14 @@ Page({
         title: curTitle
       })
     }
+  },
+
+  /**
+   * 用户点击右上角分享
+   */
+  onShareAppMessage: function () {
+    const info = app.onShare()
+    console.log(info)
+    return info
   }
 })

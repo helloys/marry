@@ -241,23 +241,7 @@ Page({
    * 用户点击右上角分享
    */
   onShareAppMessage: function () {
-    var that = this;
-    return {
-      title: '诚意邀请你参加我们的婚礼',
-      imageUrl: bgShare,
-      path: "pages/map/map",
-      success: function (res) {
-        wx.showToast({
-          title: '分享成功',
-        })
-      },
-      fail: function (res) {
-        // 转发失败
-        wx.showToast({
-          title: '分享取消',
-        })
-      }
-    }
+    return app.onShare()
   },
 
   onTapLogin: function () {

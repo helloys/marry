@@ -16,7 +16,9 @@ App({
       })
     }
 
-    this.globalData = {}
+    this.globalData = {
+      bgShare: "http://img1.ph.126.net/YolDe47TPV0qWoa1T-cW-g==/1421448632489361124.png"
+    }
   },
 
 
@@ -103,5 +105,27 @@ App({
         error && error()
       }
     })
+  },
+
+
+  // 分享
+  onShare() {
+    const bgShare = this.globalData.bgShare
+    return {
+      title: '诚意邀请你参加我们的婚礼',
+      imageUrl: bgShare,
+      path: "pages/map/map",
+      success: function (res) {
+        wx.showToast({
+          title: '分享成功',
+        })
+      },
+      fail: function (res) {
+        // 转发失败
+        wx.showToast({
+          title: '分享取消',
+        })
+      }
+    }
   }
 })
