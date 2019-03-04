@@ -1,6 +1,7 @@
 
 var musicUrl = 'http://www.ytmp3.cn/down/49676.mp3'
-var imgUrlsDefault = ["cloud://marry-6752d6.6d61-marry-6752d6/2019-1-4-16-27-48_moment0.png",
+var imgUrlsDefault = ["cloud://marry-6752d6.6d61-marry-6752d6/2019-2-1-14-44-23_moment0.jpg",
+  "cloud://marry-6752d6.6d61-marry-6752d6/2019-1-4-16-27-48_moment0.png",
   "cloud://marry-6752d6.6d61-marry-6752d6/2019-1-4-16-27-48_moment1.png",
   "cloud://marry-6752d6.6d61-marry-6752d6/2019-1-4-17-19-22_moment0.png"
                       ]

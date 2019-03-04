@@ -1,26 +1,23 @@
-.swiperContainer {
-  padding-top: 10rpx;
-  padding-bottom: 10rpx;
-  /* padding-left: 10rpx;*/
-  padding-right: 10rpx;
+.container {
+  width: 750rpx;
+  height: 100vh;
   background-color: #f1f2f7;
 }
 
 .banner_style {
-  height: 450rpx;
-  border-radius: 20rpx;
+  width: 750rpx;
+  height: 100vh;
 }
 
-.banner_image_style {
-  /* height: 100%;   */
-  padding-left: 10rpx;
-  padding-right: 10rpx;
-  border-radius: 20rpx;
+.banner_image {
+  width: 750rpx;
+  height: 100vh;
 }
+
 
 
 .music-author-username {
-  padding: 5px;
+  padding: 5rpx;
   color: #89bdf7;
 }
 
@@ -62,7 +59,7 @@
   height: 100vh;
 }
 
-.swiper swiper {
+/* .swiper swiper {
   width: 750rpx;
   height: 100vh;
 }
@@ -75,7 +72,7 @@
 .swiper image {
   width: 750rpx;
   height: 100vh;
-}
+} */
 
 .background_music {
   position: fixed;
