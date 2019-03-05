@@ -15,5 +15,6 @@ exports.main = async (event, context) => {
       "照片描述2",
       "照片描述3",
       "照片描述4"],
+    shareBgImg: 
   }
 }

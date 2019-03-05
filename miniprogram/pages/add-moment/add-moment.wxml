@@ -36,3 +36,5 @@
   <view class="comment-btn {{!commentValue ? 'dis' : ''}}" bindtap="addMoment">发表</view>
 </view>
 
+
+<canvas style="width: {{canWidth}}px;height: {{canHeight}}px;visibility:hidden;" canvas-id="attendCanvasId"/>

@@ -14,8 +14,13 @@ Page({
     commentValue: '',
     commentImages: [],
     imageVertical: [],
+    compressedImages: [],
+    waitUpload: 0,
 
-    bgShare: ''
+    bgShare: '',
+
+    canWidth: 500,
+    canHeight: 500
   },
 
   onLoad: function () {
@@ -73,35 +78,105 @@ Page({
 
   uploadImage(cb) {
     let commentImages = this.data.commentImages
-    let images = []
-    let d1 = new Date()
-    const curTimeStr = `${d1.getFullYear()}-${d1.getMonth()}-${d1.getDay()}-${d1.getHours()}-${this.prefixInteger(d1.getMinutes(), 2)}-${this.prefixInteger(d1.getSeconds(), 2)}`
-    
     if (commentImages.length) {
-      let length = commentImages.length
-      for (let i = 0; i < length; i++) {
-        const filePath = commentImages[i]
-        const cloudPathEnd = filePath.match(/\.[^.]+?$/)[0] 
-        const cloudPath = `${curTimeStr}_moment${i}${cloudPathEnd}`
-        wx.cloud.uploadFile({
-          cloudPath,
-          filePath,
-          success: res => {
-            images.push(res.fileID)
-            length--
-            if (length <= 0) {
-              cb && cb(images)
-            }
-          },
-          fail: () => {
-            length--
-          }
-        })
+      let waitUpload = this.data.waitUpload
+      if (waitUpload === 0) {
+        cb && cb(this.data.compressedImages)
+        return
       }
+
+      let curIndex = commentImages.length - waitUpload
+
+      const filePath = commentImages[curIndex]
+      // compress
+      this.drawCanvas(filePath, ()=>{this.uploadImage(cb)})
+
     } else {
+      let images = []
       cb && cb(images)
     }
   },
+
+
+  //
+  drawCanvas: function (file, cb) {  // 缩放图片
+    const ctx = wx.createCanvasContext('attendCanvasId');
+    let that = this;
+    console.log("draw canvas " + file)
+    wx.getImageInfo({
+      src: file,
+      success: function (res) {
+        console.log(res)
+        if (res.width > 500 || res.height > 500) {//判断图片是否超过500像素
+          let scale = res.width / res.height//获取原图比例
+          that.setData({//构造画板宽高
+            canWidth: 500,
+            canHeight: 500 / scale
+          })
+          //画出压缩图片
+          ctx.drawImage(file, 0, 0, that.data.canWidth, that.data.canHeight);
+          ctx.draw();
+          //等待压缩图片生成
+          var st = setTimeout(function () {
+            that.prodImageOpt(cb);
+            clearTimeout(st);
+          }, 3000);
+        } else {
+          //上传图片
+          that.uploadFileOpt(file, cb);
+        }
+      }
+    })
+  },
+
+  prodImageOpt: function (cb) {// 获取压缩图片路径
+    var that = this;
+    console.log("canvasToTemp")
+    wx.canvasToTempFilePath({
+      canvasId: 'attendCanvasId',
+      success: function success(res) {
+        console.log("canvasToTemp suc1")
+        // 上传图片
+        that.uploadFileOpt(res.tempFilePath, cb);
+        console.log("canvasToTemp suc2")
+      },
+    });
+  },
+
+  uploadFileOpt: function (filePath, cb) {//上传图片
+    let that = this;
+    let images = this.data.compressedImages
+    let waitLength = this.data.waitUpload
+    const curIndex = this.data.commentImages.length - waitLength
+
+    const d1 = new Date()
+    const curTimeStr = `${d1.getFullYear()}-${d1.getMonth()}-${d1.getDay()}-${d1.getHours()}-${this.prefixInteger(d1.getMinutes(), 2)}-${this.prefixInteger(d1.getSeconds(), 2)}`
+    const cloudPathEnd = filePath.match(/\.[^.]+?$/)[0]
+    const cloudPath = `${curTimeStr}_moment${curIndex}${cloudPathEnd}`
+
+    wx.cloud.uploadFile({
+      cloudPath,
+      filePath,
+      success: res => {
+        images.push(res.fileID)
+        waitLength--
+
+        that.data.compressedImages = images
+        that.data.waitUpload = waitLength
+        
+        cb && cb(images)
+      },
+      fail: () => {
+        waitLength--
+        that.data.waitUpload = waitLength
+        cb && cb(images)
+      }
+    })
+  },
+
+  //
+
+
 
   prefixInteger(num, n) {
     return(Array(n).join(0) + num).slice(-n);
@@ -176,6 +251,7 @@ Page({
       bVertical = true
     }
 
+    this.data.waitUpload = this.data.commentImages.length
     this.uploadImage( images => {
       const db = wx.cloud.database()
       db.collection('moments').add({
@@ -230,7 +306,9 @@ Page({
     this.setData({
       comments: "",
       commentImages: [],
-      imageVertical: []
+      imageVertical: [],
+      compressedImages: [],
+      waitUpload: 0,
     })
   },
 
