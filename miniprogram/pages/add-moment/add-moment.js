@@ -159,7 +159,7 @@ Page({
     const curIndex = this.data.commentImages.length - waitLength
 
     const d1 = new Date()
-    const curTimeStr = `${d1.getFullYear()}-${d1.getMonth()}-${d1.getDay()}-${d1.getHours()}-${this.prefixInteger(d1.getMinutes(), 2)}-${this.prefixInteger(d1.getSeconds(), 2)}`
+    const curTimeStr = `${d1.getFullYear()}-${d1.getMonth() + 1}-${d1.getDate()} ${d1.getHours()}:${this.prefixInteger(d1.getMinutes(), 2)}:${this.prefixInteger(d1.getSeconds(), 2)}`
     const cloudPathEnd = filePath.match(/\.[^.]+?$/)[0]
     const cloudPath = `${curTimeStr}_moment${curIndex}${cloudPathEnd}`
 
@@ -261,7 +261,7 @@ Page({
     const head = this.data.userInfo.avatarUrl || "/images/user-unlogin.png"
     const name = this.data.userInfo.nickName || "匿名"
     const d1 = new Date()
-    const curTimeStr = `${d1.getFullYear()}-${d1.getMonth()}-${d1.getDay()} ${d1.getHours()}:${this.prefixInteger(d1.getMinutes(), 2)}:${this.prefixInteger(d1.getSeconds(), 2)}`
+    const curTimeStr = `${d1.getFullYear()}-${d1.getMonth()+1}-${d1.getDate()} ${d1.getHours()}:${this.prefixInteger(d1.getMinutes(), 2)}:${this.prefixInteger(d1.getSeconds(), 2)}`
     let bVertical = false
     if (this.data.commentImages.length == 1 && this.data.imageVertical[0]) {
       bVertical = true
