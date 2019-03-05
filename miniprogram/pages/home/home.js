@@ -24,6 +24,7 @@ Page({
   //生命周期函数--监听页面加载
   onLoad: function (data) {
     this.getHomeInfo()
+    //this.updateCompressTag()
     // this.play()
     // this.setData({
     //   imgUrls: imgUrlsDefault
@@ -70,6 +71,8 @@ Page({
           imgUrls: homeInfo.imgUrls,
           imgTitles: homeInfo.imgTitles
         })
+        app.globalData.shareBgImg = homeInfo.shareBgImg
+
         wx.hideLoading()
         this.play()
       },

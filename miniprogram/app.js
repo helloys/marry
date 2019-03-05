@@ -17,7 +17,7 @@ App({
     }
 
     this.globalData = {
-      bgShare: "http://img1.ph.126.net/YolDe47TPV0qWoa1T-cW-g==/1421448632489361124.png"
+      shareBgImg: "http://img2.ph.126.net/L6FVeUGtfFnRT7QXLTR86Q==/2100366276315540902.jpg"
     }
   },
 

@@ -17,7 +17,7 @@ exports.main = async (event, context) => {
       inviteAddress: '地址：湖北省枝江市陶家湖养殖场 ',
       inviteLongitude: 111.900516,
       inviteLatitude: 30.480652,
-      bgImg: "cloud://marry-6752d6.6d61-marry-6752d6/2019-2-5-23-34-42_moment0.jpg"
+      bgImg: "cloud://marry-6752d6.6d61-marry-6752d6/appMaterial/groupH1.jpg"
     }
   } else {
     return {
@@ -27,7 +27,7 @@ exports.main = async (event, context) => {
       inviteAddress: '地址：额尔古纳市莫尔道嘎姐妹酒家',
       inviteLongitude: 120.778869,
       inviteLatitude: 51.260169,
-      bgImg: "cloud://marry-6752d6.6d61-marry-6752d6/2019-2-5-23-34-42_moment0.jpg"
+      bgImg: "cloud://marry-6752d6.6d61-marry-6752d6/appMaterial/groupH1.jpg"
     }
   }
 }

@@ -19,8 +19,8 @@ Page({
 
     bgShare: '',
 
-    canWidth: 500,
-    canHeight: 500
+    canWidth: 512,
+    canHeight: 512
   },
 
   onLoad: function () {
@@ -102,17 +102,29 @@ Page({
   drawCanvas: function (file, cb) {  // 缩放图片
     const ctx = wx.createCanvasContext('attendCanvasId');
     let that = this;
-    console.log("draw canvas " + file)
+
     wx.getImageInfo({
       src: file,
       success: function (res) {
-        console.log(res)
-        if (res.width > 500 || res.height > 500) {//判断图片是否超过500像素
+        if (res.width > 512 || res.height > 512) {//判断图片是否超过500像素
           let scale = res.width / res.height//获取原图比例
-          that.setData({//构造画板宽高
-            canWidth: 500,
-            canHeight: 500 / scale
-          })
+          if (scale > 1) {
+            that.setData({//构造画板宽高
+              canWidth: 512 * scale,
+              canHeight: 512
+            })
+          } else {
+            that.setData({//构造画板宽高
+              canWidth: 512,
+              canHeight: 512 / scale
+            })
+          }
+
+          
+          console.log(that.data.canWidth, that.data.canHeight)
+          let { pixelRatio } = wx.getSystemInfoSync()
+          console.log(pixelRatio)
+
           //画出压缩图片
           ctx.drawImage(file, 0, 0, that.data.canWidth, that.data.canHeight);
           ctx.draw();
@@ -131,14 +143,13 @@ Page({
 
   prodImageOpt: function (cb) {// 获取压缩图片路径
     var that = this;
-    console.log("canvasToTemp")
     wx.canvasToTempFilePath({
+      destWidth: that.data.canWidth,
+      destHeight: that.data.canHeight,
       canvasId: 'attendCanvasId',
       success: function success(res) {
-        console.log("canvasToTemp suc1")
         // 上传图片
         that.uploadFileOpt(res.tempFilePath, cb);
-        console.log("canvasToTemp suc2")
       },
     });
   },
@@ -197,17 +208,26 @@ Page({
       sizeType: ['compressed'],
       sourceType: ['album', 'camera'],
       success: res => {
-        wx.getImageInfo({
-          src: res.tempFilePaths[0],
-          success: function (res) {
-            if (res.height > res.width) {
-              currentVerticals = currentVerticals.concat(true)
-            } else {
-              currentVerticals = currentVerticals.concat(false)
+        
+        // 分别获取图片是否竖直
+        res.tempFilePaths.forEach( element => {
+          wx.getImageInfo({
+            src: element,
+            success: function (res) {
+              if (res.height > res.width) {
+                currentVerticals = currentVerticals.concat(true)
+              } else {
+                currentVerticals = currentVerticals.concat(false)
+              }
+              let end2 = currentVerticals.length
+              let begin2 = Math.max(end2 - 3, 0)
+              currentVerticals = currentVerticals.slice(begin2, end2)
+              that.data.imageVertical = currentVerticals
+              console.log(that.data.imageVertical)
             }
-            that.data.imageVertical = currentVerticals
-          }
+          })
         })
+        
         currentImages = currentImages.concat(res.tempFilePaths)
 
         let end = currentImages.length
@@ -233,6 +253,7 @@ Page({
   },
 
   addMoment(event) {
+    let that = this
     let content = this.data.commentValue
     if (!content) return
 
@@ -250,7 +271,7 @@ Page({
     } else if (this.data.commentImages.length == 2 && this.data.imageVertical[0] && this.data.imageVertical[1]) {
       bVertical = true
     }
-
+    console.log(this.data.imageVertical)
     this.data.waitUpload = this.data.commentImages.length
     this.uploadImage( images => {
       const db = wx.cloud.database()
@@ -276,6 +297,7 @@ Page({
             // wx.navigateBack()
           }, 1500)
           // console.log('[数据库] [新增记录] 成功，记录 _id: ', res._id)
+          that.clearData()
         },
         fail: err => {
           wx.hideLoading()
@@ -285,6 +307,7 @@ Page({
             title: '发布失败'
           })
           // console.error('[数据库] [新增记录] 失败：', err)
+          that.clearData()
         },
       })
     })
@@ -303,6 +326,10 @@ Page({
   onShow: function () {
     app.globalData.bHomePage = false
 
+    this.clearData()
+  },
+
+  clearData: function () {
     this.setData({
       comments: "",
       commentImages: [],
