@@ -71,8 +71,22 @@ page {
 }
 
 .preview-image {
-  margin-right: 10rpx;
+  margin-right: 16rpx;
   width: 180rpx;
+  height: 180rpx;
+  border-radius: 5rpx;
+}
+
+.preview-image-1v {
+  margin-right: 16rpx;
+  width: 180rpx;
+  height: 280rpx;
+  border-radius: 5rpx;
+}
+
+.preview-image-1h {
+  margin-right: 16rpx;
+  width: 280rpx;
   height: 180rpx;
   border-radius: 5rpx;
 }

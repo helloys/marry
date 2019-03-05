@@ -28,7 +28,7 @@
 
   <view class='comment-cnt'>
   <textarea class='comment-ipt' placeholder-class='comment-placeholder' placeholder='你想说点什么呢' auto-focus maxlength='255' bindinput='onInput'></textarea>
-    <view class='preview-cnt' wx:if='{{commentImages.length}}'>
+    <view class='preview-cnt' wx:if='{{commentImages.length}} >= 1'>
       <image class='preview-image' wx:for='{{commentImages}}' wx:key='*this' src='{{item}}' mode='aspectFill' bindtap='previewImg' data-src='{{item}}'></image>
     </view>
     <image class='opr-upload' src='/images/image.png' bindtap='chooseImage'></image>

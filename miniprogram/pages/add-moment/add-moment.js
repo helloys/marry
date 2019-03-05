@@ -13,6 +13,7 @@ Page({
 
     commentValue: '',
     commentImages: [],
+    imageVertical: [],
 
     bgShare: ''
   },
@@ -74,8 +75,8 @@ Page({
     let commentImages = this.data.commentImages
     let images = []
     let d1 = new Date()
-    const curTimeStr = `${d1.getFullYear()}-${d1.getMonth()}-${d1.getDay()}-${d1.getHours()}-${d1.getMinutes()}-${d1.getSeconds()}`
-    console.log(curTimeStr)
+    const curTimeStr = `${d1.getFullYear()}-${d1.getMonth()}-${d1.getDay()}-${d1.getHours()}-${this.prefixInteger(d1.getMinutes(), 2)}-${this.prefixInteger(d1.getSeconds(), 2)}`
+    
     if (commentImages.length) {
       let length = commentImages.length
       for (let i = 0; i < length; i++) {
@@ -102,6 +103,10 @@ Page({
     }
   },
 
+  prefixInteger(num, n) {
+    return(Array(n).join(0) + num).slice(-n);
+  },
+
   onInput(event) {
     this.setData({
       commentValue: event.detail.value.trim()
@@ -110,13 +115,24 @@ Page({
 
   chooseImage() {
     let currentImages = this.data.commentImages
-
+    let currentVerticals = this.data.imageVertical
+    var that = this
     wx.chooseImage({
       count: 3,
       sizeType: ['compressed'],
       sourceType: ['album', 'camera'],
       success: res => {
-
+        wx.getImageInfo({
+          src: res.tempFilePaths[0],
+          success: function (res) {
+            if (res.height > res.width) {
+              currentVerticals = currentVerticals.concat(true)
+            } else {
+              currentVerticals = currentVerticals.concat(false)
+            }
+            that.data.imageVertical = currentVerticals
+          }
+        })
         currentImages = currentImages.concat(res.tempFilePaths)
 
         let end = currentImages.length
@@ -152,7 +168,14 @@ Page({
     const head = this.data.userInfo.avatarUrl || "/images/user-unlogin.png"
     const name = this.data.userInfo.nickName || "匿名"
     const d1 = new Date()
-    const curTimeStr = `${d1.getFullYear()}-${d1.getMonth()}-${d1.getDay()} ${d1.getHours()}:${d1.getMinutes()}:${d1.getSeconds()}`
+    const curTimeStr = `${d1.getFullYear()}-${d1.getMonth()}-${d1.getDay()} ${d1.getHours()}:${this.prefixInteger(d1.getMinutes(), 2)}:${this.prefixInteger(d1.getSeconds(), 2)}`
+    let bVertical = false
+    if (this.data.commentImages.length == 1 && this.data.imageVertical[0]) {
+      bVertical = true
+    } else if (this.data.commentImages.length == 2 && this.data.imageVertical[0] && this.data.imageVertical[1]) {
+      bVertical = true
+    }
+
     this.uploadImage( images => {
       const db = wx.cloud.database()
       db.collection('moments').add({
@@ -162,6 +185,7 @@ Page({
           time: curTimeStr,
           words: content,
           photos: images,
+          oneVertical: bVertical,
           comments: []
         },
         success: res => {
@@ -175,7 +199,7 @@ Page({
             // todo_
             // wx.navigateBack()
           }, 1500)
-          console.log('[数据库] [新增记录] 成功，记录 _id: ', res._id)
+          // console.log('[数据库] [新增记录] 成功，记录 _id: ', res._id)
         },
         fail: err => {
           wx.hideLoading()
@@ -184,7 +208,7 @@ Page({
             icon: 'none',
             title: '发布失败'
           })
-          console.error('[数据库] [新增记录] 失败：', err)
+          // console.error('[数据库] [新增记录] 失败：', err)
         },
       })
     })
@@ -205,7 +229,8 @@ Page({
 
     this.setData({
       comments: "",
-      commentImages: []
+      commentImages: [],
+      imageVertical: []
     })
   },
 

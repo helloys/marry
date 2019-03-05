@@ -14,8 +14,14 @@
           <view class="comment">{{moment.words}}</view>
         </view>
       </view>
-      <view class='preview-cnt' wx:if='{{moment.photos.length}}'>
+      <view class='preview-cnt' wx:if='{{moment.photos.length == 3}}'>
         <image class='preview-image' wx:for='{{moment.photos}}' wx:for-item="photo" wx:key='*this' src='{{photo}}' mode='aspectFill' bindtap='previewImg' data-src='{{photo}}' data-urls='{{moment.photos}}'></image>
+      </view>
+      <view class='preview-cnt' wx:elif='{{moment.photos.length && moment.oneVertical}}'>
+        <image class='preview-image-1v' wx:for='{{moment.photos}}' wx:for-item="photo" wx:key='*this' src='{{photo}}' mode='aspectFill' bindtap='previewImg' data-src='{{photo}}' data-urls='{{moment.photos}}'></image>
+      </view>
+      <view class='preview-cnt' wx:elif='{{moment.photos.length && !moment.oneVertical}}'>
+        <image class='preview-image-1h' wx:for='{{moment.photos}}' wx:for-item="photo" wx:key='*this' src='{{photo}}' mode='aspectFill' bindtap='previewImg' data-src='{{photo}}' data-urls='{{moment.photos}}'></image>
       </view>
     </view>
   </view>
