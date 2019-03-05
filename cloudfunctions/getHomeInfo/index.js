@@ -15,6 +15,6 @@ exports.main = async (event, context) => {
       "照片描述2",
       "照片描述3",
       "照片描述4"],
-    shareBgImg: 'http://img2.ph.126.net/L6FVeUGtfFnRT7QXLTR86Q==/2100366276315540902.jpg'
+    shareBgImg: 'http://img1.ph.126.net/yHFO54L8gGCjU4fUI7w60g==/6608193525799473199.png'
   }
 }

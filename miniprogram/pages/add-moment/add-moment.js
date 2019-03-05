@@ -120,10 +120,8 @@ Page({
             })
           }
 
-          
-          console.log(that.data.canWidth, that.data.canHeight)
+
           let { pixelRatio } = wx.getSystemInfoSync()
-          console.log(pixelRatio)
 
           //画出压缩图片
           ctx.drawImage(file, 0, 0, that.data.canWidth, that.data.canHeight);
@@ -208,7 +206,7 @@ Page({
       sizeType: ['compressed'],
       sourceType: ['album', 'camera'],
       success: res => {
-        
+
         // 分别获取图片是否竖直
         res.tempFilePaths.forEach( element => {
           wx.getImageInfo({
@@ -223,7 +221,6 @@ Page({
               let begin2 = Math.max(end2 - 3, 0)
               currentVerticals = currentVerticals.slice(begin2, end2)
               that.data.imageVertical = currentVerticals
-              console.log(that.data.imageVertical)
             }
           })
         })
@@ -271,7 +268,7 @@ Page({
     } else if (this.data.commentImages.length == 2 && this.data.imageVertical[0] && this.data.imageVertical[1]) {
       bVertical = true
     }
-    console.log(this.data.imageVertical)
+
     this.data.waitUpload = this.data.commentImages.length
     this.uploadImage( images => {
       const db = wx.cloud.database()

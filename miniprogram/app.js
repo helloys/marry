@@ -17,7 +17,7 @@ App({
     }
 
     this.globalData = {
-      shareBgImg: "http://img2.ph.126.net/L6FVeUGtfFnRT7QXLTR86Q==/2100366276315540902.jpg"
+      shareBgImg: "http://img1.ph.126.net/yHFO54L8gGCjU4fUI7w60g==/6608193525799473199.png"
     }
   },
 
@@ -110,7 +110,7 @@ App({
 
   // 分享
   onShare() {
-    const bgShare = this.globalData.bgShare
+    const bgShare = this.globalData.shareBgImg
     return {
       title: '诚意邀请你参加我们的婚礼',
       imageUrl: bgShare,

@@ -37,4 +37,4 @@
 </view>
 
 
-<canvas style="width:{{canWidth}}px;height:{{canHeight}}px;margin-left:9999px" canvas-id="attendCanvasId"/>
+<canvas style="width:{{canWidth}}px;height:{{canHeight}}px;position:fixed;left:9999px" canvas-id="attendCanvasId"/>
