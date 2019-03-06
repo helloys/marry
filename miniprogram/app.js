@@ -114,7 +114,7 @@ App({
     return {
       title: '诚意邀请你参加我们的婚礼',
       imageUrl: bgShare,
-      path: "pages/map/map",
+      path: "pages/index/index",
       success: function (res) {
         wx.showToast({
           title: '分享成功',
