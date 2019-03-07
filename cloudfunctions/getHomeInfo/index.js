@@ -11,10 +11,10 @@ exports.main = async (event, context) => {
       "cloud://marry-6752d6.6d61-marry-6752d6/appMaterial/groupV2.jpg",
       "cloud://marry-6752d6.6d61-marry-6752d6/appMaterial/groupV4.jpg",
       "cloud://marry-6752d6.6d61-marry-6752d6/appMaterial/groupV5.jpg"],
-    imgTitles: ["照片描述1",
-      "照片描述2",
-      "照片描述3",
-      "照片描述4"],
+    imgTitles: ["茫茫人海、感谢相遇",
+      "一路走来、风雨同行",
+      "相伴到老、余生是你",
+      "小爽与大聪"],
     shareBgImg: 'http://img1.ph.126.net/yHFO54L8gGCjU4fUI7w60g==/6608193525799473199.png'
   }
 }

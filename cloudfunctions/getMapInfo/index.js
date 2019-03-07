@@ -7,7 +7,7 @@ cloud.init()
 exports.main = async (event, context) => {
   const curDate = Date.now()
 
-  const date1 = new Date('2019-02-17T04:00:00')
+  const date1 = new Date('2019-03-17T04:00:00')
 
   if (curDate < date1) {
     return {
