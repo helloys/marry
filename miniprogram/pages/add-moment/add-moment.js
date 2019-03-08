@@ -328,7 +328,7 @@ Page({
 
   clearData: function () {
     this.setData({
-      comments: "",
+      commentValue: "",
       commentImages: [],
       imageVertical: [],
       compressedImages: [],
