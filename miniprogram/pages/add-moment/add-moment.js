@@ -272,7 +272,10 @@ Page({
     this.data.waitUpload = this.data.commentImages.length
     this.uploadImage( images => {
       const db = wx.cloud.database()
-      db.collection('moments').add({
+
+      // todo_正式版 改回 moments
+      
+      db.collection('testMoments').add({
         data: {
           avatarUrl: head,
           nickName: name,
@@ -386,4 +389,6 @@ Page({
       }
     })
   },
+
+  
 })

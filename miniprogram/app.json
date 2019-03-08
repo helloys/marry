@@ -1,9 +1,11 @@
 {
   "pages": [
-    "pages/index/index",
+    "pages/bless/bless",
     "pages/add-moment/add-moment",
-    "pages/map/map",
-    "pages/bless/bless"
+    "pages/index/index",
+    
+    "pages/map/map"
+    
     
   ],
   "window": {

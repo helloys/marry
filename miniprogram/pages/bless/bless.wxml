@@ -1,8 +1,8 @@
 <!--pages/bless/index.wxml-->
 <view class="container">
   <view class="chat_view" wx:if="{{moments.length > 0}}">
-    <view class="chat_list" wx:for="{{moments}}" wx:key="user" wx:for-item="moment">
-      <view class="userInfo">
+    <view class="chat_list" wx:for="{{moments}}" wx:key="_id" wx:for-item="moment">
+      <view class="userInfo"  bindtap='onClickMoment' data-src='{{moment}}'>
         <view class="chat_face">
           <image src="{{moment.avatarUrl}}" />
         </view>
@@ -23,6 +23,19 @@
       <view class='preview-cnt' wx:elif='{{moment.photos.length && !moment.oneVertical}}'>
         <image class='preview-image-1h' wx:for='{{moment.photos}}' wx:for-item="photo" wx:key='*this' src='{{photo}}' mode='aspectFill' bindtap='previewImg' data-src='{{photo}}' data-urls='{{moment.photos}}'></image>
       </view>
+      <!-- 回复 -->
+      <view class="comment" wx:if='{{!!interactions[moment._id]}}'>
+        <view class="chat_meta" wx:for="{{interactions[moment._id]}}" wx:for-item="oneReply" wx:key='_id' data-src='{{oneReply}}' bindtap='tryReplyOther'>
+          <text class="chat_date" wx:if="{{oneReply.bToMoment}}">{{oneReply.fromName}}:{{oneReply.replyWords}}</text>
+          <text class="chat_date" wx:else>{{oneReply.fromName}}对{{oneReply.toName}}说:{{oneReply.replyWords}}</text>
+        </view>
+      </view>
     </view>
   </view>
+</view>
+<view class="send_msg" wx:if='{{bReply}}'>
+    <form bindreset="onClickReply">
+      <input placeholder="对{{targetName}}说" class="send_ipt" bindinput="onReplyInput" />
+      <button type="primary" form-type="reset" class="send_btn">回复</button>
+    </form>
 </view>
