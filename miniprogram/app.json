@@ -1,8 +1,9 @@
 {
   "pages": [
+    "pages/index/index",
     "pages/bless/bless",
     "pages/add-moment/add-moment",
-    "pages/index/index",
+    
     
     "pages/map/map"
     

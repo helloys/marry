@@ -159,7 +159,7 @@ Page({
     const curIndex = this.data.commentImages.length - waitLength
 
     const d1 = new Date()
-    const curTimeStr = `${d1.getFullYear()}-${d1.getMonth() + 1}-${d1.getDate()} ${d1.getHours()}:${this.prefixInteger(d1.getMinutes(), 2)}:${this.prefixInteger(d1.getSeconds(), 2)}`
+    const curTimeStr = `${d1.getFullYear()}-${d1.getMonth() + 1}-${d1.getDate()}-${d1.getHours()}-${this.prefixInteger(d1.getMinutes(), 2)}-${this.prefixInteger(d1.getSeconds(), 2)}`
     const cloudPathEnd = filePath.match(/\.[^.]+?$/)[0]
     const cloudPath = `${curTimeStr}_moment${curIndex}${cloudPathEnd}`
 
@@ -271,11 +271,10 @@ Page({
 
     this.data.waitUpload = this.data.commentImages.length
     this.uploadImage( images => {
+
       const db = wx.cloud.database()
 
-      // todo_正式版 改回 moments
-      
-      db.collection('testMoments').add({
+      db.collection('moments').add({
         data: {
           avatarUrl: head,
           nickName: name,
@@ -293,8 +292,9 @@ Page({
           })
 
           setTimeout(() => {
-            // todo_
-            // wx.navigateBack()
+            wx.switchTab({
+              url: '/pages/bless/bless',
+            })
           }, 1500)
           // console.log('[数据库] [新增记录] 成功，记录 _id: ', res._id)
           that.clearData()
@@ -325,8 +325,6 @@ Page({
    */
   onShow: function () {
     app.globalData.bHomePage = false
-
-    this.clearData()
   },
 
   clearData: function () {

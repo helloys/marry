@@ -32,9 +32,7 @@ Page({
     var that = this
     const db = wx.cloud.database()
 
-    // todo_ 修改为moments
-
-    db.collection('testMoments').get({
+    db.collection('moments').get({
       success(res) {
         that.setData({
           moments: res.data.reverse() 
@@ -55,9 +53,12 @@ Page({
    */
   onShow: function () {
     app.globalData.bHomePage = false
+    this.data.userInfo = app.data.userInfo
     
     this.getMomentList()
     this.getInteractionList()
+
+    this.closeReply()
   },
 
   /**
@@ -70,13 +71,21 @@ Page({
 
   // 点击动态回复 动态主体
   onClickMoment(event) {
-    console.log("onClickMoment")
+    // 没有登陆，跳转登陆页面
+    if (!this.data.userInfo) {
+      wx.switchTab({
+        url: '/pages/add-moment/add-moment'
+      })
+      return;
+    }
+
     const target = event.currentTarget
     const moment = target.dataset.src
     this.setData({
       bReply: true,
       targetName: moment.nickName,
       currentMoment: moment,
+      currentInteract: null,
       replyValue: ""
     })
   },
@@ -87,27 +96,68 @@ Page({
     })
   },
 
+  // 对别人的评论 进行 回复
+  tryReplyOther(event) {
+    // 没有登陆，跳转登陆页面
+    if (!this.data.userInfo) {
+      wx.switchTab({
+        url: '/pages/add-moment/add-moment'
+      })
+      return;
+    }
+
+    const target = event.currentTarget
+    const interact = target.dataset.src
+
+    // 自己的评论  1 客户端缓存
+    if (interact._id === 0) return;
+    if (interact.fromName === this.data.userInfo.nickName) return;
+
+    this.setData({
+      bReply: true,
+      targetName: interact.fromName,
+      currentMoment: null,
+      currentInteract: interact,
+      replyValue: ""
+    })
+  },
+
   // 回复
   onClickReply() {
-    console.log("onClickReply")
     const replyWords = this.data.replyValue
     if (!replyWords) return;
 
     let that = this
-    const moment = this.data.currentMoment
-    const momentid = moment._id
+    const curMoment = this.data.currentMoment
+    let momentid = '0'
     // fromOpenid 表里会自动生成
     const fromName = this.data.userInfo.nickName
-    const toOpenid = moment._openid
-    const toName = moment.nickName
-    const bToMoment = true
-    const toInteracid = ''
+    let toOpenid = '0'
+    let toName = '0'
+    let bToMoment = true
+    let toInteracid = '0'
+    if (!!curMoment) {
+      momentid = curMoment._id
+      toOpenid = curMoment._openid
+      toName = curMoment.fromName
+      bToMoment = true
+      toInteracid = '0'
+    }
+    // 如果是回复评论
+    let curInteract = this.data.currentInteract
+    if (!!curInteract) {
+      momentid = curInteract.momentid
+      toOpenid = curInteract._openid
+      toName = curInteract.fromName
+      bToMoment = false
+      toInteracid = curInteract._id
+    }
 
     this.addReply(momentid, fromName, replyWords, toOpenid, toName, bToMoment, toInteracid)
 
     // 临时数据填充，刷新UI
     let temp = {
-      bTemp: true,
+      _id: 0,
       momentid: momentid,
       fromName: fromName,
       replyWords: replyWords,
@@ -117,14 +167,14 @@ Page({
       bToMoment: bToMoment,
       toInteracid: toInteracid
     }
-    let curInteract = this.data.interactions
-    if (momentid in curInteract) {
-      curInteract[momentid].push(temp)
+    let interacts = this.data.interactions
+    if (momentid in interacts) {
+      interacts[momentid].push(temp)
     } else {
-      curInteract[momentid] = [temp]
+      interacts[momentid] = [temp]
     }
     this.setData({
-      interactions: curInteract
+      interactions: interacts
     })
   },
 
@@ -199,25 +249,6 @@ Page({
       targetName: "",
       currentMoment: null,
       replyValue: "",
-    })
-  },
-
-  // 对别人的评论 进行 回复
-  tryReplyOther(event) {
-    console.log("tryReplyOther")
-    const target = event.currentTarget
-    const interact = target.dataset.src
-    console.log(interact)
-
-    // 自己的评论  1 客户端缓存
-    if (!!interact[bTemp]) return;
-    if (interact[fromName] === this.data.userInfo.nickName) return;
-
-    this.setData({
-      bReply: true,
-      targetName: interact.fromName,
-      currentMoment: moment,
-      replyValue: ""
     })
   },
 

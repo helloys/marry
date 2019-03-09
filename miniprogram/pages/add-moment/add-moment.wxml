@@ -6,7 +6,7 @@
     <image class="unlogin-head" src='/images/user-unlogin.png'  mode='aspectFill'></image>
     <view class="unlogin-info">
       <view class="unlogin-text">未登录</view>
-      <view class="unlogin-tips">点击微信登录后可发布动态</view>
+      <view class="unlogin-tips">点击微信登录后可发布和回复</view>
     </view>
   </view>
   <button wx:if="{{locationAuthType==0}}" class="unlogin-btn" open-type='getUserInfo' bindgetuserinfo='onTapLogin'>微信登录</button>

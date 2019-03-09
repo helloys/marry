@@ -24,6 +24,7 @@ App({
 
   data: {
     locationAuthType: UNPROMPTED,
+    userInfo: null
   },
 
   login({ success, error }) {
@@ -61,6 +62,7 @@ App({
           wx.getUserInfo({
             success: res => {
               userInfo = res.userInfo
+              this.data.userInfo = userInfo
               success && success({
                 userInfo
               })
@@ -112,7 +114,7 @@ App({
   onShare() {
     const bgShare = this.globalData.shareBgImg
     return {
-      title: '诚意邀请你参加我们的婚礼',
+      title: '邀请您参加余爽张莒璇的婚礼',
       imageUrl: bgShare,
       path: "pages/index/index",
       success: function (res) {

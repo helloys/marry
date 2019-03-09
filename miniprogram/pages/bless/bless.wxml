@@ -24,10 +24,12 @@
         <image class='preview-image-1h' wx:for='{{moment.photos}}' wx:for-item="photo" wx:key='*this' src='{{photo}}' mode='aspectFill' bindtap='previewImg' data-src='{{photo}}' data-urls='{{moment.photos}}'></image>
       </view>
       <!-- 回复 -->
-      <view class="comment" wx:if='{{!!interactions[moment._id]}}'>
-        <view class="chat_meta" wx:for="{{interactions[moment._id]}}" wx:for-item="oneReply" wx:key='_id' data-src='{{oneReply}}' bindtap='tryReplyOther'>
-          <text class="chat_date" wx:if="{{oneReply.bToMoment}}">{{oneReply.fromName}}:{{oneReply.replyWords}}</text>
-          <text class="chat_date" wx:else>{{oneReply.fromName}}对{{oneReply.toName}}说:{{oneReply.replyWords}}</text>
+      <view wx:if='{{!!interactions[moment._id]}}'>
+        <view wx:for="{{interactions[moment._id]}}" wx:for-item="oneReply" wx:key='_id' data-src='{{oneReply}}' bindtap='tryReplyOther'>
+          <text class="reply" wx:if="{{oneReply.bToMoment}}">
+            {{oneReply.fromName}}：{{oneReply.replyWords}}            
+          </text>
+          <text class="reply" wx:else>{{oneReply.fromName}} 对 {{oneReply.toName}}说：{{oneReply.replyWords}}</text>
         </view>
       </view>
     </view>
