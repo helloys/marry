@@ -317,6 +317,8 @@ Page({
    */
   onShow: function () {
     app.globalData.bHomePage = false
+
+    this.closeReply()
     
     if (this.data.bLoaded) {
       // 刷新 最新的未读 回复信息
@@ -324,7 +326,6 @@ Page({
     } else {
       this.data.bLoaded = true
     }
-    
   },
 
   clearData: function () {
