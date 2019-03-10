@@ -20,7 +20,22 @@ Page({
     bgShare: '',
 
     canWidth: 512,
-    canHeight: 512
+    canHeight: 512,
+
+
+    // 未查看回复
+    interactions: null,
+    seenInteracts: {},
+    notSeenInteracts: [],
+    waitData: 0,
+
+    bLoaded: false,
+
+    // 回复
+    bReply: false,
+    targetName: '',
+    currentInteract: null,
+    replyValue: '',
   },
 
   onLoad: function () {
@@ -51,29 +66,6 @@ Page({
       })
     }
   },
-
-  onGetOpenid: function () {
-    // 调用云函数
-    wx.cloud.callFunction({
-      name: 'login',
-      data: {},
-      success: res => {
-        console.log('[云函数] [login] user openid: ', res.result.openid)
-        app.globalData.openid = res.result.openid
-        // wx.navigateTo({
-        //   url: '../userConsole/userConsole',
-        // })
-      },
-      fail: err => {
-        console.error('[云函数] [login] 调用失败', err)
-        wx.navigateTo({
-          url: '../deployFunctions/deployFunctions',
-        })
-      }
-    })
-  },
-
-
 
 
   uploadImage(cb) {
@@ -106,19 +98,19 @@ Page({
     wx.getImageInfo({
       src: file,
       success: function (res) {
-        if (res.width > 512 || res.height > 512) {//判断图片是否超过500像素
+        if (res.width > 102400 || res.height > 102400) {//判断图片是否超过500像素
           let scale = res.width / res.height//获取原图比例
           if (scale > 1) {
             that.setData({//构造画板宽高
-              canWidth: 512 * scale,
-              canHeight: 512
+              canWidth: 1024,
+              canHeight: 1024 / scale
             })
           } else {
             that.setData({//构造画板宽高
-              canWidth: 512,
-              canHeight: 512 / scale
+              canWidth: 1024 * scale,
+              canHeight: 1024
             })
-          }
+          } 
 
 
           let { pixelRatio } = wx.getSystemInfoSync()
@@ -325,6 +317,14 @@ Page({
    */
   onShow: function () {
     app.globalData.bHomePage = false
+    
+    if (this.data.bLoaded) {
+      // 刷新 最新的未读 回复信息
+      this.tryGetNotSeenReply()
+    } else {
+      this.data.bLoaded = true
+    }
+    
   },
 
   clearData: function () {
@@ -373,11 +373,17 @@ Page({
   },
 
   onTapLogin: function () {
+    let that = this
     app.login({
       success: ({ userInfo }) => {
-        this.setData({
+        that.setData({
           userInfo,
           locationAuthType: app.data.locationAuthType
+        })
+
+        // 获取未查看 新的 回复
+        that.getOpenid(()=>{
+          that.tryGetNotSeenReply()
         })
       },
       error: () => {
@@ -388,5 +394,198 @@ Page({
     })
   },
 
+  tryGetNotSeenReply: function() {
+    // 获取openid，获取未查看 新的 回复
+    if (!!app.globalData.openid) {
+      this.setData({
+        notSeenInteracts: []
+      })
+
+      this.data.waitData = 2
+      this.getInteractionList()
+      this.getHaveSeenInteract()
+    }
+  },
+
+  getOpenid: function (success) {
+    // 调用云函数
+    wx.cloud.callFunction({
+      name: 'login',
+      data: {},
+      success: res => {
+        console.log('[云函数] [login] user openid: ', res.result.openid)
+        app.globalData.openid = res.result.openid
+        
+        success && success()
+        // wx.navigateTo({
+        //   url: '../userConsole/userConsole',
+        // })
+      },
+      fail: err => {
+        console.error('[云函数] [login] 调用失败', err)
+      }
+    })
+  },
+
+  // 获得所有评论数据
+  getInteractionList() {
+    var that = this
+    const db = wx.cloud.database()
+    db.collection('interactions').get({
+      success(res) {
+        that.setData({
+          interactions: res.data
+        })
+        that.tryGetNotSeenInteract()
+      }
+    })
+  },
+
+  // 获取已经查看过的 回复 列表
+  getHaveSeenInteract() {
+    var that = this
+    const db = wx.cloud.database()
+    db.collection('seenInteracts').get({
+      success(res) {
+        if (res.data.length > 0) {
+          that.setData({
+            seenInteracts: res.data[0]
+          })
+        }
+      },
+      complete() {
+        that.tryGetNotSeenInteract()
+      }
+    })
+  },
+
+  // 获取为查看过的 回复 列表
+  tryGetNotSeenInteract() {
+    this.data.waitData = this.data.waitData - 1
+    if (this.data.waitData == 0) {
+      const interacts = this.data.interactions
+      const seenInteracts = this.data.seenInteracts
+      let haveSeens = null
+      if (!!this.data.seenInteracts && !!seenInteracts.haveSeens) {
+        haveSeens = seenInteracts.haveSeens
+      }
+    
+      const myopenid = app.globalData.openid
+      let allInteracts = []
+      let notSeens = this.data.notSeenInteracts
+
+      interacts.forEach( interactItem => {
+
+        if (interactItem.toOpenid == myopenid) {
+          const interactID = interactItem._id
+          allInteracts.push(interactID)
+          // 空 或者 包含
+          if (!haveSeens || !haveSeens.includes(interactID)) {
+            notSeens.push(interactItem)
+          }
+        }
+        
+      })
+      // 显示未查看回复
+      this.setData({
+        notSeenInteracts: notSeens
+      })
+
+      // 更新存储，已查看到最新
+      const db = wx.cloud.database()
+      if (!haveSeens) {
+        db.collection('seenInteracts').add({
+          data: {
+            haveSeens: allInteracts
+          }
+        })
+      } else if (notSeens.length > 0) {
+        db.collection('seenInteracts').doc(seenInteracts._id).update({
+          data: {
+            haveSeens: allInteracts
+          }
+        })
+      }
+    }
+  },
+
+  // 对别人的评论 进行 回复
+  tryReplyOther(event) {
+    const target = event.currentTarget
+    const interact = target.dataset.src
+
+    this.setData({
+      bReply: true,
+      targetName: interact.fromName,
+      currentInteract: interact,
+    })
+  },
   
+  onReplyInput(event) {
+    this.setData({
+      replyValue: event.detail.value.trim()
+    })
+  },
+
+  // 回复
+  onClickReply() {
+    const replyWords = this.data.replyValue
+    if (!replyWords) return;
+
+    let that = this
+    // fromOpenid 表里会自动生成
+    const fromName = this.data.userInfo.nickName
+    // 如果是回复评论
+    let curInteract = this.data.currentInteract
+    let momentid = curInteract.momentid
+    let toOpenid = curInteract._openid
+    let toName = curInteract.fromName
+    let bToMoment = false
+    let toInteracid = curInteract._id
+    const replyTime = Date.now()
+
+    wx.showLoading({
+      title: '正在回复'
+    })
+    const db = wx.cloud.database()
+    db.collection('interactions').add({
+      data: {
+        momentid: momentid,
+        fromName: fromName,
+        replyWords: replyWords,
+        toOpenid: toOpenid,
+        toName: toName,
+        replyTime: replyTime,
+        bToMoment: bToMoment,
+        toInteracid: toInteracid
+      },
+      success: res => {
+        wx.hideLoading()
+
+        wx.showToast({
+          title: '回复成功'
+        })
+
+        this.closeReply()
+      },
+      fail: err => {
+        wx.hideLoading()
+
+        wx.showToast({
+          icon: 'none',
+          title: '回复失败'
+        })
+        that.closeReply()
+      },
+    })
+  },
+
+  // 隐藏回复
+  closeReply() {
+    this.setData({
+      bReply: false,
+      targetName: "",
+      replyValue: "",
+    })
+  },
 })

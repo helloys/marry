@@ -17,6 +17,7 @@ App({
     }
 
     this.globalData = {
+      openid: null,
       shareBgImg: "http://img1.ph.126.net/yHFO54L8gGCjU4fUI7w60g==/6608193525799473199.png"
     }
   },
