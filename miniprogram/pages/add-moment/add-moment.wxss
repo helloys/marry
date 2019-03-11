@@ -169,7 +169,7 @@ page {
 .reply {
     display: inline-block;
     font-size: 30rpx;
-    line-height: 5rpx;
+    line-height: 34rpx;
     color: #ccc;
     margin-left: 19rpx;
 }
