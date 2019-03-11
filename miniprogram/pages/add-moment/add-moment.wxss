@@ -165,13 +165,16 @@ page {
 .comment-btn.dis {
   color: rgba(52, 55, 61, 0.5);
 }
+.replies {
 
+}
 .reply {
     display: inline-block;
     font-size: 30rpx;
     line-height: 34rpx;
     color: #ccc;
     margin-left: 19rpx;
+    padding-top: 0rpx;
 }
 
 .send_msg {

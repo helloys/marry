@@ -26,9 +26,7 @@
       <!-- 回复 -->
       <view wx:if='{{!!interactions[moment._id]}}'>
         <view wx:for="{{interactions[moment._id]}}" wx:for-item="oneReply" wx:key='_id' data-src='{{oneReply}}' bindtap='tryReplyOther'>
-          <text class="reply" wx:if="{{oneReply.bToMoment}}">
-            {{oneReply.fromName}}：{{oneReply.replyWords}}            
-          </text>
+          <text class="reply" wx:if="{{oneReply.bToMoment}}">{{oneReply.fromName}}：{{oneReply.replyWords}}</text>
           <text class="reply" wx:else>{{oneReply.fromName}} 对 {{oneReply.toName}}说：{{oneReply.replyWords}}</text>
         </view>
       </view>
