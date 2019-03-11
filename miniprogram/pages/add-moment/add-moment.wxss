@@ -69,8 +69,8 @@ page {
   flex-direction: row;
   align-items: center;
 
-  margin: 29rpx 27rpx;
-  box-shadow:  0 0 20px rgba(190,77,43,.2);
+  margin: 29rpx 27rpx 10rpx;
+  box-shadow:  0 0 20px rgba(190,77,43,.12);
   /* box-shadow: 0 2rpx 13rpx 5rpx rgba(0, 0, 0, 0.02); */
   border-radius: 10rpx;
 }
@@ -82,6 +82,7 @@ page {
   border-radius: 10%;
   background-size: cover;
   background-color: white;
+  margin-left: 30rpx;
 }
 
 .userinfo-avatar:after {
@@ -109,10 +110,10 @@ page {
 
 
 .comment-cnt {
-  margin: 29rpx 27rpx 0;
+  margin: 20rpx 27rpx 0;
   padding-bottom: 26rpx;
   background: #FFFFFF;
-  box-shadow:  0 0 20px rgba(190,77,43,.2);
+  box-shadow:  0 0 20px rgba(190,77,43,.12);
   /* box-shadow: 0 2rpx 13rpx 5rpx rgba(0, 0, 0, 0.02); */
   border-radius: 10rpx;
 }
