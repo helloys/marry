@@ -22,6 +22,7 @@ page {
   line-height: 46rpx;
   color: rgba(29, 29, 38, 0.8);
   font-weight: bold;
+  margin-left: 20rpx;
 }
 
 .user-split {
@@ -78,7 +79,7 @@ page {
   width: 100rpx;
   height: 100rpx;
   margin: 20rpx;
-  border-radius: 50%;
+  border-radius: 10%;
   background-size: cover;
   background-color: white;
 }
@@ -165,9 +166,7 @@ page {
 .comment-btn.dis {
   color: rgba(52, 55, 61, 0.5);
 }
-.replies {
 
-}
 .reply {
     display: inline-block;
     font-size: 30rpx;

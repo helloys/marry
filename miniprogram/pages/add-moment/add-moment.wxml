@@ -37,7 +37,7 @@
 </view>
 
 <!-- 回复 -->
-<view class="replies" wx:if='{{!!notSeenInteracts && notSeenInteracts.length > 0}}'>
+<view wx:if='{{!!notSeenInteracts && notSeenInteracts.length > 0}}'>
   <text class="reply">有{{notSeenInteracts.length}}条新的回复</text>
   <view wx:for="{{notSeenInteracts}}" wx:for-item="oneReply" wx:key='_id' data-src='{{oneReply}}' bindtap='tryReplyOther'>
     <text class="reply">{{oneReply.fromName}} 对你说：{{oneReply.replyWords}}</text>
