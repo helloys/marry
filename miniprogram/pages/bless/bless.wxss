@@ -38,7 +38,7 @@ page {
     width: 100rpx;
     height: 100rpx;
     border-radius: 10%;
-    box-shadow:  0 0 4rpx rgba(0, 0, 0, 0.1);
+    box-shadow:  0 0 2rpx rgba(0, 0, 0, 0.1);
 }
 .chat_words {
     width: 500rpx;

@@ -98,7 +98,7 @@ Page({
     wx.getImageInfo({
       src: file,
       success: function (res) {
-        if (res.width > 102400 || res.height > 102400) {//判断图片是否超过500像素
+        if (res.width > 1024 || res.height > 1024) {//判断图片是否超过500像素
           let scale = res.width / res.height//获取原图比例
           if (scale > 1) {
             that.setData({//构造画板宽高
@@ -431,11 +431,13 @@ Page({
   // 获得所有评论数据
   getInteractionList() {
     var that = this
-    const db = wx.cloud.database()
-    db.collection('interactions').get({
-      success(res) {
+    // 调用云函数
+    wx.cloud.callFunction({
+      name: 'getInteractions',
+      data: {},
+      success: res => {
         that.setData({
-          interactions: res.data
+          interactions: res.result.data
         })
         that.tryGetNotSeenInteract()
       }
@@ -494,18 +496,20 @@ Page({
 
       // 更新存储，已查看到最新
       const db = wx.cloud.database()
-      if (!haveSeens) {
-        db.collection('seenInteracts').add({
-          data: {
-            haveSeens: allInteracts
-          }
-        })
-      } else if (notSeens.length > 0) {
-        db.collection('seenInteracts').doc(seenInteracts._id).update({
-          data: {
-            haveSeens: allInteracts
-          }
-        })
+      if (notSeens.length > 0) {
+        if (!haveSeens) {
+          db.collection('seenInteracts').add({
+            data: {
+              haveSeens: allInteracts
+            }
+          })
+        } else {
+          db.collection('seenInteracts').doc(seenInteracts._id).update({
+            data: {
+              haveSeens: allInteracts
+            }
+          })
+        }
       }
     }
   },

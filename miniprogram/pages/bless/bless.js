@@ -1,5 +1,9 @@
 const app = getApp()
 
+
+//定义每次获取的条数​
+const MAX_LIMIT = 20
+
 Page({
 
   /**
@@ -28,15 +32,21 @@ Page({
     })
   },
 
-  getMomentList() {
-    var that = this
-    const db = wx.cloud.database()
+  
 
-    db.collection('moments').get({
-      success(res) {
-        that.setData({
-          moments: res.data.reverse() 
+  getMomentList() {
+    // 调用云函数
+    wx.cloud.callFunction({
+      name: 'getMoments',
+      data: {},
+      success: res => {
+        const momentList = res.result.data
+        this.setData({
+          moments: momentList.reverse()
         })
+      },
+      fail: err => {
+        console.error("getMoments fail")
       }
     })
   },
@@ -220,14 +230,16 @@ Page({
 
   // 获得所有评论数据
   getInteractionList() {
-    var that = this
-    const db = wx.cloud.database()
-    db.collection('interactions').get({
-      success(res) {
+    let that = this
+    // 调用云函数
+    wx.cloud.callFunction({
+      name: 'getInteractions',
+      data: {},
+      success: res => {
+        const interacts = res.result.data
 
-        const interacts = res.data
         let momentsReplay = {}
-        interacts.forEach( interact => {
+        interacts.forEach(interact => {
           const momentid = interact.momentid
           if (momentid in momentsReplay) {
             momentsReplay[momentid].push(interact)
@@ -238,9 +250,13 @@ Page({
         that.setData({
           interactions: momentsReplay
         })
+      },
+      fail: err => {
+        console.error("getInteractions fail")
       }
     })
   },
+      
 
   // 隐藏回复
   closeReply() {

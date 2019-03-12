@@ -82,7 +82,7 @@ page {
   border-radius: 10%;
   background-size: cover;
   background-color: white;
-  margin-left: 30rpx;
+  margin-left: 28rpx;
 }
 
 .userinfo-avatar:after {
