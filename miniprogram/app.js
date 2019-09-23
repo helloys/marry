@@ -4,6 +4,7 @@ const UNAUTHORIZED = 1
 const AUTHORIZED = 2
 
 let userInfo
+const cloudUrlHead = "cloud://marry-6752d6.6d61-marry-6752d6/"
 
 App({
   onLaunch: function () {
@@ -25,7 +26,8 @@ App({
 
   data: {
     locationAuthType: UNPROMPTED,
-    userInfo: null
+    userInfo: null,
+    headCloudPath: null
   },
 
   login({ success, error }) {
@@ -67,6 +69,9 @@ App({
               success && success({
                 userInfo
               })
+
+              // 保存头像，防止失效
+              this.saveHeadImg(userInfo)
             },
             fail: ()=> {
               error && error()
@@ -130,5 +135,46 @@ App({
         })
       }
     }
+  },
+
+  prefixInteger(num, n) {
+    return (Array(n).join(0) + num).slice(-n);
+  },
+
+  saveHeadImg(userInfo) {
+    let that = this
+
+    let headUrl = userInfo.avatarUrl
+    let nickName = userInfo.nickName
+    // 把头像转存到云端，防止失效
+    wx.downloadFile({
+      url: headUrl,
+      success(res) {
+        if (res.statusCode === 200) {
+
+          let headImg = res.tempFilePath
+
+          wx.saveFile({
+            tempFilePath: headImg,
+            success (dres) {
+              
+              const d1 = new Date()
+              const curTimeStr = `${d1.getFullYear()}-${d1.getMonth() + 1}-${d1.getDate()}`
+              const cloudPathEnd = headImg.match(/\.[^.]+?$/)[0]
+              const cloudPath = `head/${curTimeStr}-${nickName}${cloudPathEnd}`
+
+              that.data.headCloudPath = cloudUrlHead + cloudPath
+
+              let filePath = dres.savedFilePath
+              wx.cloud.uploadFile({
+                cloudPath,
+                filePath,
+              })
+
+            }
+          })
+        }
+      }
+    })
   }
 })

@@ -38,7 +38,7 @@ Page({
         isPlayingMusic: false
       })
     } else {
-      console.log('this.data.music_url', this.data.music_url)
+      //console.log('this.data.music_url', this.data.music_url)
       wx.playBackgroundAudio({
         dataUrl: this.data.music_url,
         title: '',

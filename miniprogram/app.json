@@ -3,11 +3,7 @@
     "pages/index/index",
     "pages/bless/bless",
     "pages/add-moment/add-moment",
-    
-    
     "pages/map/map"
-    
-    
   ],
   "window": {
     "backgroundTextStyle": "light",
@@ -47,5 +43,6 @@
     "backgroundColor": "#fff",
     "color": "#5f5f5f"
   },
-  "cloud": true
+  "cloud": true,
+  "sitemapLocation": "sitemap.json"
 }

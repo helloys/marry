@@ -262,13 +262,16 @@ Page({
     }
 
     this.data.waitUpload = this.data.commentImages.length
+    let headCloudUrl = app.data.headCloudPath
+    //console.log(headCloudUrl)
+
     this.uploadImage( images => {
 
       const db = wx.cloud.database()
 
       db.collection('moments').add({
         data: {
-          avatarUrl: head,
+          avatarUrl: headCloudUrl,
           nickName: name,
           time: curTimeStr,
           words: content,
@@ -414,7 +417,7 @@ Page({
       name: 'login',
       data: {},
       success: res => {
-        console.log('[云函数] [login] user openid: ', res.result.openid)
+        //console.log('[云函数] [login] user openid: ', res.result.openid)
         app.globalData.openid = res.result.openid
         
         success && success()
